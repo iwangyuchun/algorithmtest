@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"> </script>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [['$','$'], ['\\(','\\)']]}});</script>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS": {"availableFonts":["TeX"],"scale": 150}});</script>
+
+<style>
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: "Segoe WPC", "Segoe UI", "SFUIText-Light", "HelveticaNeue-Light", sans-serif, "Droid Sans Fallback";
+	font-size: 14px;
+	padding: 0 12px;
+	line-height: 22px;
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	color: #4080D0;
+	text-decoration: none;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+h1 code,
+h2 code,
+h3 code,
+h4 code,
+h5 code,
+h6 code {
+	font-size: inherit;
+	line-height: auto;
+}
+
+a:hover {
+	color: #4080D0;
+	text-decoration: underline;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left: 5px solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 14px;
+	line-height: 19px;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+.mac code {
+	font-size: 12px;
+	line-height: 18px;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+/** Theming */
+
+.vscode-light,
+.vscode-light pre code {
+	color: rgb(30, 30, 30);
+}
+
+.vscode-dark,
+.vscode-dark pre code {
+	color: #DDD;
+}
+
+.vscode-high-contrast,
+.vscode-high-contrast pre code {
+	color: white;
+}
+
+.vscode-light code {
+	color: #A31515;
+}
+
+.vscode-dark code {
+	color: #D7BA7D;
+}
+
+.vscode-light pre:not(.hljs),
+.vscode-light code > div {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre:not(.hljs),
+.vscode-dark code > div {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre:not(.hljs),
+.vscode-high-contrast code > div {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+.vscode-light blockquote,
+.vscode-dark blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.vscode-high-contrast blockquote {
+	background: transparent;
+	border-color: #fff;
+}
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+</style>
+
+</head>
+<body>
+<p>该文档结合之前的需求文档编写，参考需求文档一起看</p>
+<h2 id="%E6%A0%91%E5%BD%A2%E5%B8%83%E5%B1%80">树形布局</h2>
+<p><code>TreeLayoutClass.h</code>文件中声明了树形布局的所有的方法。<code>ThreeLayoutClass.cpp</code>文件中对所有声明的方法进行了实现。</p>
+<pre class="hljs"><code><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">"TreeLayoutClass.h"</span></span>
+TreeLayoutClass treeLayout;
+str=treeLayout.layout(nodes, links, pam);
+</div></code></pre>
+<p>正常情况下，只需要创建<code>TreeLayoutClass</code>对象，并调用<code>layout(nodes,links,pam)</code>方法即可,该方法会接收三个参数，<code>nodes</code>,<code>links</code>的类型分别为<code>vector&lt;Node&gt;</code>,<code>vector&lt;Link&gt;</code>。<code>Node</code>对象和<code>Link</code>对象在<code>Node.h</code>和<code>Link.h</code>中予以声明。<code>layout</code>方法的返回值为<code>Json</code>序列化的<code>string</code>类型,如果想获取的返回值不是<code>string</code>类型，可以再调用<code>layout</code>方法后，另外调用<code>exportNodes</code>和<code>exportLinks</code>这两个方法分别返回<code>vector&lt;Node*&gt;</code>和<code>vector&lt;Link*&gt;</code>。对于参数<code>pam</code>其声明可以再<code>LayoutParams.h</code>中查看，此文件也对其他布局中所欲要的参数进行了详细的声明。</p>
+<h2 id="%E6%A1%91%E5%90%89%E5%9B%BE">桑吉图</h2>
+<p><code>LevelLayoutClass.h</code>文件中声明了桑吉布局的所有的方法。<code>LevelLayoutClass.cpp</code>文件中对所有声明的方法进行了实现。</p>
+<pre class="hljs"><code><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">"LevelLayoutClass.h"</span></span>
+LevelLayoutClass levelLayoutClass;
+str = levelLayoutClass.layout(nodes, links,pam);
+</div></code></pre>
+<p>正常情况下，只需要创建<code>LevelLayoutClass</code>对象，并调用<code>layout(nodes,links,pam)</code>方法即可,该方法会接收三个参数，<code>nodes</code>,<code>links</code>的类型分别为<code>vector&lt;Node&gt;</code>,<code>vector&lt;Link&gt;</code>。<code>Node</code>对象和<code>Link</code>对象在<code>Node.h</code>和<code>Link.h</code>中予以声明。<code>layout</code>方法的返回值为<code>Json</code>序列化的<code>string</code>类型,如果想获取的返回值不是<code>string</code>类型，可以再调用<code>layout</code>方法后，另外调用<code>exportNodes</code>和<code>exportLinks</code>这两个方法分别返回<code>vector&lt;Node*&gt;</code>和<code>vector&lt;Link*&gt;</code>。对于参数<code>pam</code>其声明可以再<code>LayoutParams.h</code>中查看，此文件也对其他布局中所欲要的参数进行了详细的声明。</p>
+<h2 id="%E5%8A%9B%E5%AF%BC%E5%B8%83%E5%B1%80">力导布局</h2>
+<pre class="hljs"><code><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">"force.cpp"</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">"FDP.h"</span></span>
+ <span class="hljs-built_in">map</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-keyword">int</span>&gt; indexById;
+<span class="hljs-keyword">int</span> nodeLength = nodes.size();
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; nodeLength; i++) {
+     indexById.insert(pair&lt;<span class="hljs-built_in">string</span>,<span class="hljs-keyword">int</span>&gt;(nodes[i].id, i));
+}
+<span class="hljs-keyword">int</span> linkLength = links.size(); 
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; linkLength; j++) {
+     <span class="hljs-comment">//将from 和to 转换为 soure 和 target</span>
+     links[j].source = indexById.find(links[j].from)-&gt;second;
+     links[j].target = indexById.find(links[j].to)-&gt;second;
+}
+FDP(nodes, links, nodes.size(), links.size(), <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, pam.electricalCharge, pam.springStiffness, pam.springLength, pam.maxIterations, pam.infinityDistance, pam.viewSize[<span class="hljs-number">0</span>], pam.viewSize[<span class="hljs-number">1</span>],pam.nodeSpacing);
+ <span class="hljs-comment">//compute link's position according to soure node and target node</span>
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; linkLength; j++) {
+    links[j].fromPosition[<span class="hljs-number">0</span>] = nodes[sourceNodeIndex].x;
+    links[j].fromPosition[<span class="hljs-number">1</span>] = nodes[sourceNodeIndex].y;
+    links[j].toPosition[<span class="hljs-number">0</span>] = nodes[targetNodeIndex].x;
+    links[j].toPosition[<span class="hljs-number">1</span>] = nodes[targetNodeIndex].y;
+ }
+ <span class="hljs-comment">//serialize node and link to json str</span>
+str = jsonClass.ObjectToJsonForce(nodes, links)
+</div></code></pre>
+<p>对于力导布局，调用<code>FDP()</code>传入对应的参数即可，参数的详细解释在<code>FDP.cpp</code>中有详细说明,使用之前要确保<code>link</code>使用的是<code>source</code>,<code>target</code>而不是<code>from</code>,<code>to</code>作为源节点和目标结点,另外在布局过程中并不关系<code>link</code>的具体的位置，需要在布局结束后需要自己进行构建,<code>jsonClass.ObjectToJsonForce(nodes, links)</code>函数可以将力导布局过后的<code>node``link</code>序列化为<code>json</code>格式。</p>
+<h2 id="%E5%9C%86%E5%BD%A2%E5%B8%83%E5%B1%80">圆形布局</h2>
+<pre class="hljs"><code><div><span class="hljs-comment">//格式转换将vector&lt;node&gt;,vector&lt;link&gt;转换为vector&lt;Node*&gt;vector&lt;Link*&gt;</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">"circular.h"</span></span>
+<span class="hljs-built_in">vector</span>&lt;Node*&gt; cirNodes;
+<span class="hljs-built_in">vector</span>&lt;Link*&gt; cirLinks;
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; nodes.size(); i++) {
+    Node* cirNode = <span class="hljs-keyword">new</span> Node();
+    Node temp = nodes[i];
+    cirNode-&gt;id = temp.id;
+    cirNodes.push_back(cirNode);
+}
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; links.size(); i++)
+{
+    Link* cirLink = <span class="hljs-keyword">new</span> Link();
+    Link temp = links[i];
+    cirLink-&gt;from = links[i].from;
+    cirLink-&gt;to = links[i].to;
+    cirLink-&gt;value = links[i].value;
+    cirLinks.push_back(cirLink);
+}
+circular cirLayout;
+<span class="hljs-keyword">double</span> minView = min(pam.viewSize[<span class="hljs-number">0</span>], pam.viewSize[<span class="hljs-number">1</span>]);
+<span class="hljs-comment">//调用圆形布局</span>
+cirLayout.run(cirLinks, cirNodes, pam.radius, pam.spacing, minView, pam.startAngle, pam.circleDirection);
+JSONClass jsonClass;
+ <span class="hljs-comment">//序列化为json string</span>
+str = jsonClass.ObjectToJson(cirNodes,cirLinks);
+</div></code></pre>
+<p>对于圆形布局于其它布局方法类似，在这里就不进行详细解释。</p>
+<h2 id="jsonclass">JsonClass</h2>
+<p><code>JsonClass</code> 为工具类，主要用来将对象序列化为<code>JSON</code>格式或者将<code>JSON</code>反序列化为<code>Node</code>和<code>Link</code>对象</p>
+<h2 id="httplib">httplib</h2>
+<p><code>httplib</code>用来搭建http sercer 方便远程主机使用算法,其中在<code>main.cpp</code>中监听了<code>8989</code>端口,并对<code>/pos</code>路由进行了处理。</p>
+
+</body>
+</html>
